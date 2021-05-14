@@ -6,107 +6,62 @@
  * @flow strict-local
  */
 
-import React from 'react';
-import type {Node} from 'react';
-import {
-  SafeAreaView,
-  ScrollView,
-  StatusBar,
-  StyleSheet,
-  Text,
-  useColorScheme,
-  View,
-} from 'react-native';
-
-import {
-  Colors,
-  DebugInstructions,
-  Header,
-  LearnMoreLinks,
-  ReloadInstructions,
-} from 'react-native/Libraries/NewAppScreen';
-
-const Section = ({children, title}): Node => {
-  const isDarkMode = useColorScheme() === 'dark';
-  return (
-    <View style={styles.sectionContainer}>
-      <Text
-        style={[
-          styles.sectionTitle,
-          {
-            color: isDarkMode ? Colors.white : Colors.black,
-          },
-        ]}>
-        {title}
-      </Text>
-      <Text
-        style={[
-          styles.sectionDescription,
-          {
-            color: isDarkMode ? Colors.light : Colors.dark,
-          },
-        ]}>
-        {children}
-      </Text>
-    </View>
-  );
-};
-
-const App: () => Node = () => {
-  const isDarkMode = useColorScheme() === 'dark';
-
-  const backgroundStyle = {
-    backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
-  };
-
-  return (
-    <SafeAreaView style={backgroundStyle}>
-      <StatusBar barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
-      <ScrollView
-        contentInsetAdjustmentBehavior="automatic"
-        style={backgroundStyle}>
-        <Header />
-        <View
-          style={{
-            backgroundColor: isDarkMode ? Colors.black : Colors.white,
-          }}>
-          <Section title="Step One">
-            Edit <Text style={styles.highlight}>App.js</Text> to change this
-            screen and then come back to see your edits.
-          </Section>
-          <Section title="See Your Changes">
-            <ReloadInstructions />
-          </Section>
-          <Section title="Debug">
-            <DebugInstructions />
-          </Section>
-          <Section title="Learn More">
-            Read the docs to discover what to do next:
-          </Section>
-          <LearnMoreLinks />
-        </View>
-      </ScrollView>
-    </SafeAreaView>
-  );
-};
-
+import React, {useState} from 'react';
+import {View, Text, StyleSheet, ScrollView, Button} from 'react-native';
+import Header from './src/component/header/Header';
+import Generator from './src/component/Generator/Generator';
+import Numlist from './src/component/Generator/Numlist';
+import Input from './src/component/input/Input';
 const styles = StyleSheet.create({
-  sectionContainer: {
-    marginTop: 32,
-    paddingHorizontal: 24,
+  mainView: {
+    backgroundColor: 'white',
+    flex: 1, //화면을 차지 하는 비율, 1/1 다른게 3이면 1/4 : 3/4
+    paddingTop: 50,
+    alignItems: 'center', //수평정렬
   },
-  sectionTitle: {
-    fontSize: 24,
-    fontWeight: '600',
+  mainText: {
+    fontSize: 20,
+    fontWeight: 'normal',
+    color: 'red',
+    padding: 20,
   },
-  sectionDescription: {
-    marginTop: 8,
-    fontSize: 18,
-    fontWeight: '400',
-  },
-  highlight: {
-    fontWeight: '700',
+  ButtonDesign: {
+    backgroundColor: '#EBEBEC',
+    borderRadius: 10,
+    width: 160,
+    height: 48,
+    justifyContent: 'center',
   },
 });
 
-export default App;
+export default function App() {
+  const [appName, setAppName] = useState('로그인/회원가입');
+
+  return (
+    <View style={styles.mainView}>
+      <Header name={appName} />
+      <Text style={{paddingTop: 24}}>밥먹다와 함께 할</Text>
+      <Text>메일주소를 적어주세요</Text>
+      <Input />
+      <View style={styles.ButtonDesign}>
+        <Button title="다음" />
+      </View>
+    </View>
+  );
+}
+
+{
+  /* <Text style={styles.mainText} onPress={() => alert('text touch event')}>
+        Hello World
+      </Text>
+      <Generator add={onAddRandomNumber} />
+      <ScrollView style={{width: '100%'}}>
+        <Numlist num={random} />
+      </ScrollView> */
+}
+
+//const [random, setrandom] = useState([36, 99]);
+// const onAddRandomNumber = () => {
+//   const randomNum = Math.floor(Math.random() * 100) + 1;
+//   setrandom([...random, randomNum]);
+// };
