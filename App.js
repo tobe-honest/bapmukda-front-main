@@ -40,11 +40,11 @@ export default function App() {
   return (
     <View style={styles.mainView}>
       <Header name={appName} />
-      <Text style={{paddingTop: 24}}>밥먹다와 함께 할</Text>
-      <Text>메일주소를 적어주세요</Text>
+      <Text style={{fontWeight: 'bold', paddingTop: 24}}>밥먹다와 함께 할</Text>
+      <Text style={{fontWeight: 'bold'}}>메일주소를 적어주세요</Text>
       <Input />
       <View style={styles.ButtonDesign}>
-        <Button title="다음" />
+        <Button title="다음" color="#D6D7D9" />
       </View>
     </View>
   );
