@@ -7,46 +7,37 @@
  */
 
 import React, {useState} from 'react';
-import {View, Text, StyleSheet, ScrollView, Button} from 'react-native';
-import Header from './src/component/header/Header';
-import Generator from './src/component/Generator/Generator';
-import Numlist from './src/component/Generator/Numlist';
-import Input from './src/component/input/Input';
-const styles = StyleSheet.create({
-  mainView: {
-    backgroundColor: 'white',
-    flex: 1, //화면을 차지 하는 비율, 1/1 다른게 3이면 1/4 : 3/4
-    paddingTop: 50,
-    alignItems: 'center', //수평정렬
-  },
-  mainText: {
-    fontSize: 20,
-    fontWeight: 'normal',
-    color: 'red',
-    padding: 20,
-  },
-  ButtonDesign: {
-    backgroundColor: '#EBEBEC',
-    borderRadius: 10,
-    width: 160,
-    height: 48,
-    justifyContent: 'center',
-  },
-});
+import 'react-native-gesture-handler';
+import {NavigationContainer} from '@react-navigation/native';
+import {createStackNavigator} from '@react-navigation/stack';
+import HomeScreen from './src/component/Home/Home';
+import LoginScreen from './src/component/Login/Login';
+import HaveId from './src/component/Login/HaveId/HaveId';
+import SignUp from './src/component/SignUp/SignUp';
+const Stack = createStackNavigator();
 
 export default function App() {
-  const [appName, setAppName] = useState('로그인/회원가입');
-
   return (
-    <View style={styles.mainView}>
-      <Header name={appName} />
-      <Text style={{fontWeight: 'bold', paddingTop: 24}}>밥먹다와 함께 할</Text>
-      <Text style={{fontWeight: 'bold'}}>메일주소를 적어주세요</Text>
-      <Input />
-      <View style={styles.ButtonDesign}>
-        <Button title="다음" color="#D6D7D9" />
-      </View>
-    </View>
+    <NavigationContainer>
+      <Stack.Navigator initialRouteName="Home">
+        <Stack.Screen name="Home" component={HomeScreen} />
+        <Stack.Screen
+          name="Login"
+          component={LoginScreen}
+          options={{title: '로그인/회원가입'}}
+        />
+        <Stack.Screen
+          name="HaveId"
+          component={HaveId}
+          options={{title: '로그인'}}
+        />
+        <Stack.Screen
+          name="SignUp"
+          component={SignUp}
+          options={{title: '회원가입'}}
+        />
+      </Stack.Navigator>
+    </NavigationContainer>
   );
 }
 

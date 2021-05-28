@@ -16,7 +16,7 @@ export default function Input() {
       }}>
       <TextInput
         value={myTextInput}
-        placeholder="이메일을 입력하세요"
+        placeholder="비밀번호 입력"
         style={styles.input}
         onChangeText={onChangeInput}
         multiline={true}
