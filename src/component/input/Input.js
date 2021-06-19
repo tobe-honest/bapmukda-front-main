@@ -5,14 +5,20 @@ import symbolicateStackTrace from 'react-native/Libraries/Core/Devtools/symbolic
 export default function Input() {
   const [myTextInput, setmyTextInput] = useState('');
   const [isFocused, setisFocused] = useState(true);
+  const [isChange, setisChange] = useState(false);
+
   const onChangeInput = event => {
     setmyTextInput(event);
+    setisChange(true);
   };
   const handleFocus = () => setisFocused(true);
   const handleBlur = () => setisFocused(false);
-
+  const value = {
+    isChange,
+  };
   return (
     <View
+      value={value}
       style={{
         paddingTop: 50,
         paddingBottom: 48,

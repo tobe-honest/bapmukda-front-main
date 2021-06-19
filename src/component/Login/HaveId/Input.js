@@ -4,9 +4,12 @@ import {View, Text, StyleSheet, TextInput} from 'react-native';
 export default function Input() {
   const [myTextInput, setmyTextInput] = useState('');
   const [isFocused, setisFocused] = useState(true);
+  const [isChange, setisChange] = useState(false);
   const onChangeInput = event => {
     setmyTextInput(event);
+    setisChange(true);
   };
+
   const handleFocus = () => setisFocused(true);
   const handleBlur = () => setisFocused(false);
   return (

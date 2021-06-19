@@ -5,11 +5,12 @@ import CheckBox from '@react-native-community/checkbox';
 export default function Nickname() {
   const [myTextInput, setmyTextInput] = useState('');
   const [passWordInput, setPassWordInput] = useState(true);
-
+  const [isInput, setisInput] = useState(false);
   const handlepwFocus = () => setPassWordInput(true);
   const handlepwBlur = () => setPassWordInput(false);
   const onChangeInput = event => {
     setmyTextInput(event);
+    setisInput(true);
   };
   return (
     <View style={styles.mainView}>
@@ -57,15 +58,27 @@ export default function Nickname() {
           <Text>개인정보방침에 동의합니다.</Text>
         </View>
       </View>
-      <View style={styles.ButtonDesign}>
-        <Button
-          title="다음"
-          color="#D6D7D9"
-          onPress={() => {
-            props.navigation.navigate('Home');
-          }}
-        />
-      </View>
+      {isInput ? (
+        <View style={styles.afterButtonDesign}>
+          <Button
+            title="다음"
+            color="white"
+            onPress={() => {
+              props.navigation.navigate('Home');
+            }}
+          />
+        </View>
+      ) : (
+        <View style={styles.ButtonDesign}>
+          <Button
+            title="다음"
+            color="#D6D7D9"
+            onPress={() => {
+              props.navigation.navigate('Home');
+            }}
+          />
+        </View>
+      )}
     </View>
   );
 }
@@ -89,6 +102,14 @@ const styles = StyleSheet.create({
     height: 48,
     justifyContent: 'center',
   },
+  afterButtonDesign: {
+    backgroundColor: '#E17551',
+    borderRadius: 10,
+    width: 160,
+    height: 48,
+    justifyContent: 'center',
+  },
+
   input: {
     width: '70%',
     height: 56,
