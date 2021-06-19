@@ -14,6 +14,7 @@ import HomeScreen from './src/component/Home/Home';
 import LoginScreen from './src/component/Login/Login';
 import HaveId from './src/component/Login/HaveId/HaveId';
 import SignUp from './src/component/SignUp/SignUp';
+import Nickname from './src/component/SignUp/Nickname/Nickname';
 const Stack = createStackNavigator();
 
 export default function App() {
@@ -34,6 +35,11 @@ export default function App() {
         <Stack.Screen
           name="SignUp"
           component={SignUp}
+          options={{title: '회원가입'}}
+        />
+        <Stack.Screen
+          name="nickname"
+          component={Nickname}
           options={{title: '회원가입'}}
         />
       </Stack.Navigator>
