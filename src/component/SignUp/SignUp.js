@@ -7,13 +7,9 @@ export default function SignUp(props) {
   const [passwordConfirm, setPasswordConfirm] = useState('');
   const [passWordInput, setPassWordInput] = useState(true);
   const [passwordConfirmInput, setPasswordConfirmInput] = useState(true);
-  const handlepwFocus = () => setPassWordInput(true);
-  const handlepwBlur = () => setPassWordInput(false);
   const handlepwcFocus = () => setPasswordConfirmInput(true);
   const handlepwcBlur = () => setPasswordConfirmInput(false);
-  const onChangeInput = event => {
-    setmyTextInput(event);
-  };
+
   const onConfirmInput = event => {
     setPasswordConfirm(event);
   };
@@ -24,64 +20,19 @@ export default function SignUp(props) {
       <Text style={{paddingTop: 10, color: '#999BA0'}}>
         영문,숫자를 포함하여 10자 이상 입력해주세요
       </Text>
-      <View
-        style={{
-          paddingTop: 50,
-          paddingBottom: 48,
-          width: '100%',
-          alignItems: 'center',
-        }}>
-        <TextInput
-          value={myTextInput}
-          placeholder="비밀번호 입력"
-          style={styles.input}
-          onChangeText={onChangeInput}
-          multiline={true}
-          maxLength={10}
-          autoCapitalize={'none'}
-          editable={true}
-          textAlign={'center'}
-          secureTextEntry={true}
-          type="password"
-          onFocus={handlepwFocus}
-          onBlur={handlepwBlur}
-          style={[
-            styles.input,
-            {
-              borderColor: passWordInput ? '#333842' : '#D6D7D9',
-            },
-          ]}
-        />
-      </View>
-      <View
-        style={{
-          paddingBottom: 48,
-          width: '100%',
-          alignItems: 'center',
-        }}>
-        <TextInput
-          value={passwordConfirm}
-          placeholder="비밀번호 재입력"
-          style={styles.input}
-          onChangeText={onConfirmInput}
-          multiline={true}
-          maxLength={10}
-          autoCapitalize={'none'}
-          editable={true}
-          textAlign={'center'}
-          textAlignVertical={'center'}
-          secureTextEntry={true}
-          type="password"
-          onFocus={handlepwcFocus}
-          onBlur={handlepwcBlur}
-          style={[
-            styles.input,
-            {
-              borderColor: passwordConfirmInput ? '#333842' : '#D6D7D9',
-            },
-          ]}
-        />
-      </View>
+
+      <TextInput
+        style={styles.input}
+        placeholder="비밀번호를 입력하세요"
+        type="password"
+        secureTextEntry={true}></TextInput>
+
+      <TextInput
+        style={styles.input}
+        placeholder="비밀번호를 입력하세요"
+        type="password"
+        secureTextEntry={true}></TextInput>
+
       <View style={styles.ButtonDesign}>
         <Button
           title="다음"
@@ -114,17 +65,18 @@ const styles = StyleSheet.create({
     width: 160,
     height: 48,
     justifyContent: 'center',
+    marginTop: 50,
   },
   input: {
     width: '70%',
     height: 56,
     backgroundColor: '#FBFBFB',
+    marginTop: 50,
     borderRadius: 12,
     borderColor: '#D6D7D9',
     borderWidth: 1,
-    paddingBottom: 0,
-    paddingTop: 0,
     justifyContent: 'center',
     lineHeight: 20,
+    textAlign: 'center',
   },
 });

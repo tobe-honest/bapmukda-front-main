@@ -1,6 +1,6 @@
 import 'react-native-gesture-handler';
 import React from 'react';
-import {View, Text, Button} from 'react-native';
+import {View, Text, Button, TextInput} from 'react-native';
 
 export default function Home(props) {
   return (

@@ -1,8 +1,13 @@
 import 'react-native-gesture-handler';
 import React, {useState} from 'react';
-import {View, Text, StyleSheet, ScrollView, Button} from 'react-native';
-import Header from '../header/Header';
-import Input from '../input/Input';
+import {
+  View,
+  Text,
+  StyleSheet,
+  ScrollView,
+  Button,
+  TextInput,
+} from 'react-native';
 const styles = StyleSheet.create({
   mainView: {
     backgroundColor: 'white',
@@ -22,6 +27,19 @@ const styles = StyleSheet.create({
     width: 160,
     height: 48,
     justifyContent: 'center',
+    marginTop: 50,
+  },
+  input: {
+    width: '70%',
+    height: 56,
+    backgroundColor: '#FBFBFB',
+    marginTop: 50,
+    borderRadius: 12,
+    borderColor: '#D6D7D9',
+    borderWidth: 1,
+    justifyContent: 'center',
+    lineHeight: 20,
+    textAlign: 'center',
   },
 });
 
@@ -36,7 +54,10 @@ export default function Longin(props) {
       <Text style={{fontWeight: 'bold', fontSize: 18}}>
         메일주소를 적어주세요
       </Text>
-      <Input />
+      <TextInput
+        style={styles.input}
+        type="email"
+        placeholder="메일주소 입력"></TextInput>
       <View style={styles.ButtonDesign}>
         <Button
           title="다음"

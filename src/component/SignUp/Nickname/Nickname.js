@@ -8,6 +8,8 @@ export default function Nickname() {
   const [isInput, setisInput] = useState(false);
   const handlepwFocus = () => setPassWordInput(true);
   const handlepwBlur = () => setPassWordInput(false);
+  const [isSelected, setSelection] = useState(false);
+
   const onChangeInput = event => {
     setmyTextInput(event);
     setisInput(true);
@@ -26,59 +28,48 @@ export default function Nickname() {
       <View
         style={{
           paddingTop: 50,
-          paddingBottom: 48,
+          paddingBottom: 24,
           width: '100%',
           alignItems: 'center',
         }}>
         <TextInput
-          value={myTextInput}
-          placeholder="닉네임 입력"
           style={styles.input}
-          onChangeText={onChangeInput}
-          multiline={true}
-          maxLength={10}
-          autoCapitalize={'none'}
-          editable={true}
-          textAlign={'center'}
-          secureTextEntry={true}
-          type="password"
-          onFocus={handlepwFocus}
-          onBlur={handlepwBlur}
-          style={[
-            styles.input,
-            {
-              borderColor: passWordInput ? '#333842' : '#D6D7D9',
-            },
-          ]}
-        />
+          type="text"
+          placeholder="닉네임 입력"></TextInput>
       </View>
-      <View>
-        <View>
-          <CheckBox />
-          <Text>개인정보방침에 동의합니다.</Text>
+      <View style={styles.container}>
+        <View style={styles.checkboxContainer}>
+          <CheckBox
+            value={isSelected}
+            onValueChange={setSelection}
+            style={styles.checkbox}
+          />
+          <Text style={styles.label}>개인정보방침에 동의합니다.</Text>
         </View>
       </View>
-      {isInput ? (
-        <View style={styles.afterButtonDesign}>
-          <Button
-            title="다음"
-            color="white"
-            onPress={() => {
-              props.navigation.navigate('Home');
-            }}
-          />
-        </View>
-      ) : (
-        <View style={styles.ButtonDesign}>
-          <Button
-            title="다음"
-            color="#D6D7D9"
-            onPress={() => {
-              props.navigation.navigate('Home');
-            }}
-          />
-        </View>
-      )}
+      <View style={{marginTop: 50}}>
+        {isInput ? (
+          <View style={styles.afterButtonDesign}>
+            <Button
+              title="다음"
+              color="white"
+              onPress={() => {
+                props.navigation.navigate('Home');
+              }}
+            />
+          </View>
+        ) : (
+          <View style={styles.ButtonDesign}>
+            <Button
+              title="다음"
+              color="#D6D7D9"
+              onPress={() => {
+                props.navigation.navigate('Home');
+              }}
+            />
+          </View>
+        )}
+      </View>
     </View>
   );
 }
@@ -114,11 +105,26 @@ const styles = StyleSheet.create({
     width: '70%',
     height: 56,
     backgroundColor: '#FBFBFB',
+    marginTop: 50,
     borderRadius: 12,
     borderColor: '#D6D7D9',
     borderWidth: 1,
-    paddingBottom: 0,
     justifyContent: 'center',
     lineHeight: 20,
+    textAlign: 'center',
+  },
+  container: {
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  checkboxContainer: {
+    flexDirection: 'row',
+    marginBottom: 20,
+  },
+  checkbox: {
+    alignSelf: 'center',
+  },
+  label: {
+    margin: 8,
   },
 });
