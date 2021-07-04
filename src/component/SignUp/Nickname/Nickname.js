@@ -43,8 +43,12 @@ export default function Nickname() {
             value={isSelected}
             onValueChange={setSelection}
             style={styles.checkbox}
+            onCheckColor="white"
+            onFillColor="#E17551"
+            onTintColor="#E17551"
           />
-          <Text style={styles.label}>개인정보방침에 동의합니다.</Text>
+          <Text style={styles.label}>개인정보방침 </Text>
+          <Text style={{marginTop: 8, marginLeft: -15}}> 에 동의합니다.</Text>
         </View>
       </View>
       <View style={{marginTop: 50}}>
@@ -126,5 +130,7 @@ const styles = StyleSheet.create({
   },
   label: {
     margin: 8,
+    textDecorationLine: 'underline',
+    color: '#E17551',
   },
 });

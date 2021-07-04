@@ -22,12 +22,20 @@ const styles = StyleSheet.create({
     padding: 20,
   },
   ButtonDesign: {
-    backgroundColor: '#EBEBEC',
     borderRadius: 10,
     width: 160,
     height: 48,
     justifyContent: 'center',
     marginTop: 50,
+    backgroundColor: '#EBEBEC',
+  },
+  ButtonDesign2: {
+    borderRadius: 10,
+    width: 160,
+    height: 48,
+    justifyContent: 'center',
+    marginTop: 50,
+    backgroundColor: '#E17551',
   },
   input: {
     width: '70%',
@@ -44,8 +52,10 @@ const styles = StyleSheet.create({
 });
 
 export default function Longin(props) {
-  const [LonginName, setLonginName] = useState('로그인/회원가입');
-
+  const [LonginName, setLonginName] = useState('');
+  const onChangeInput = event => {
+    setLonginName(event);
+  };
   return (
     <View style={styles.mainView}>
       <Text style={{fontWeight: 'bold', paddingTop: 24, fontSize: 18}}>
@@ -57,16 +67,32 @@ export default function Longin(props) {
       <TextInput
         style={styles.input}
         type="email"
-        placeholder="메일주소 입력"></TextInput>
-      <View style={styles.ButtonDesign}>
-        <Button
-          title="다음"
-          color="#D6D7D9"
-          onPress={() => {
-            props.navigation.navigate('HaveId');
-          }}
-        />
-      </View>
+        placeholder="메일주소 입력"
+        value={LonginName}
+        onChangeText={onChangeInput}></TextInput>
+
+      {LonginName === '' ? (
+        <View style={styles.ButtonDesign}>
+          <Button
+            title="다음"
+            color="#D6D7D9"
+            onPress={() => {
+              props.navigation.navigate('HaveId');
+            }}
+          />
+        </View>
+      ) : (
+        <View style={styles.ButtonDesign2}>
+          <Button
+            title="다음"
+            color="white"
+            backgroundColor="#E17551"
+            onPress={() => {
+              props.navigation.navigate('HaveId');
+            }}
+          />
+        </View>
+      )}
     </View>
   );
 }
