@@ -3,13 +3,14 @@ import {useState} from 'react';
 import {View, Text, StyleSheet, TextInput, Button} from 'react-native';
 
 export default function SignUp(props) {
-  const [myTextInput, setmyTextInput] = useState('');
   const [passwordConfirm, setPasswordConfirm] = useState('');
-  const [passWordInput, setPassWordInput] = useState(true);
+  const [passWordInput, setPassWordInput] = useState('');
   const [passwordConfirmInput, setPasswordConfirmInput] = useState(true);
   const handlepwcFocus = () => setPasswordConfirmInput(true);
   const handlepwcBlur = () => setPasswordConfirmInput(false);
-
+  const onPassWordInput = event => {
+    setPassWordInput(event);
+  };
   const onConfirmInput = event => {
     setPasswordConfirm(event);
   };
@@ -25,23 +26,39 @@ export default function SignUp(props) {
         style={styles.input}
         placeholder="비밀번호를 입력하세요"
         type="password"
-        secureTextEntry={true}></TextInput>
+        secureTextEntry={true}
+        value={passWordInput}
+        onChangeText={onPassWordInput}></TextInput>
 
       <TextInput
         style={styles.input}
         placeholder="비밀번호를 입력하세요"
         type="password"
-        secureTextEntry={true}></TextInput>
-
-      <View style={styles.ButtonDesign}>
-        <Button
-          title="다음"
-          color="#D6D7D9"
-          onPress={() => {
-            props.navigation.navigate('nickname');
-          }}
-        />
-      </View>
+        secureTextEntry={true}
+        value={passwordConfirm}
+        onChangeText={onConfirmInput}></TextInput>
+      {passWordInput === '' || passwordConfirm === '' ? (
+        <View style={styles.ButtonDesign}>
+          <Button
+            title="다음"
+            color="#D6D7D9"
+            onPress={() => {
+              props.navigation.navigate('nickname');
+            }}
+          />
+        </View>
+      ) : (
+        <View style={styles.ButtonDesign2}>
+          <Button
+            title="다음"
+            color="white"
+            backgroundColor="#E17551"
+            onPress={() => {
+              props.navigation.navigate('nickname');
+            }}
+          />
+        </View>
+      )}
     </View>
   );
 }
@@ -78,5 +95,13 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     lineHeight: 20,
     textAlign: 'center',
+  },
+  ButtonDesign2: {
+    borderRadius: 10,
+    width: 160,
+    height: 48,
+    justifyContent: 'center',
+    marginTop: 50,
+    backgroundColor: '#E17551',
   },
 });
