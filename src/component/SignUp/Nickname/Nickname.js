@@ -12,7 +12,6 @@ export default function Nickname() {
 
   const onChangeInput = event => {
     setmyTextInput(event);
-    setisInput(true);
   };
   return (
     <View style={styles.mainView}>
@@ -35,6 +34,8 @@ export default function Nickname() {
         <TextInput
           style={styles.input}
           type="text"
+          value={myTextInput}
+          onChangeText={onChangeInput}
           placeholder="닉네임 입력"></TextInput>
       </View>
       <View style={styles.container}>
@@ -52,21 +53,22 @@ export default function Nickname() {
         </View>
       </View>
       <View style={{marginTop: 50}}>
-        {isInput ? (
-          <View style={styles.afterButtonDesign}>
+        {myTextInput === '' ? (
+          <View style={styles.ButtonDesign}>
             <Button
               title="다음"
-              color="white"
+              color="#D6D7D9"
               onPress={() => {
                 props.navigation.navigate('Home');
               }}
             />
           </View>
         ) : (
-          <View style={styles.ButtonDesign}>
+          <View style={styles.ButtonDesign2}>
             <Button
               title="다음"
-              color="#D6D7D9"
+              color="white"
+              backgroundColor="#E17551"
               onPress={() => {
                 props.navigation.navigate('Home');
               }}
@@ -104,7 +106,14 @@ const styles = StyleSheet.create({
     height: 48,
     justifyContent: 'center',
   },
+  ButtonDesign2: {
+    borderRadius: 10,
+    width: 160,
+    height: 48,
+    justifyContent: 'center',
 
+    backgroundColor: '#E17551',
+  },
   input: {
     width: '70%',
     height: 56,
