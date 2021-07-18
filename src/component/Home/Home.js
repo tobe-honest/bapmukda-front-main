@@ -17,6 +17,12 @@ export default function Home(props) {
           props.navigation.navigate('Login');
         }}
       />
+      <Button
+        title="To Calender Screen"
+        onPress={() => {
+          props.navigation.navigate('Calender');
+        }}
+      />
     </View>
   );
 }

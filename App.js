@@ -15,6 +15,7 @@ import LoginScreen from './src/component/Login/Login';
 import HaveId from './src/component/Login/HaveId/HaveId';
 import SignUp from './src/component/SignUp/SignUp';
 import Nickname from './src/component/SignUp/Nickname/Nickname';
+import Calendar from './src/component/Calender/Calender';
 const Stack = createStackNavigator();
 
 export default function App() {
@@ -41,6 +42,11 @@ export default function App() {
           name="nickname"
           component={Nickname}
           options={{title: '회원가입'}}
+        />
+        <Stack.Screen
+          name="Calender"
+          component={Calendar}
+          options={{title: '캘린더'}}
         />
       </Stack.Navigator>
     </NavigationContainer>
