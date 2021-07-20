@@ -33,11 +33,13 @@ export default function Calender() {
         transparent={true}
         coverScreen={false}
         backdropColor={'transparent'}
-        backdropOpacity={1}>
+        backdropOpacity={1}
+        deviceHeight="20%">
         <View
           style={{
-            flex: 0.5,
+            flex: 0.3,
             backgroundColor: 'white',
+            top: '70%',
             justifyContent: 'space-around',
             alignItems: 'center',
             height: '30%',
