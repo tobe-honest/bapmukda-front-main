@@ -29,17 +29,20 @@ export default function Calender() {
       />
       <Modal
         isVisible={isModalVisible}
-        style={{justifyContent: 'flex-end', margin: 0}}
+        style={{
+          justifyContent: 'flex-end',
+          margin: 0,
+        }}
         transparent={true}
         coverScreen={false}
-        backdropColor={'transparent'}
+        backdropColor={'white'}
         backdropOpacity={1}
-        deviceHeight="20%">
+        deviceHeight="15%">
         <View
           style={{
             flex: 0.3,
             backgroundColor: 'white',
-            top: '70%',
+            top: '80%',
             justifyContent: 'space-around',
             alignItems: 'center',
             height: '30%',
