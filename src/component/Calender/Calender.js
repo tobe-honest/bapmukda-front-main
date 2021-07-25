@@ -9,24 +9,72 @@ export default function Calender() {
   const workout = {key: 'workout', color: 'green'};
   const today = moment().format('YYYY-MM-DD');
   const [isModalVisible, setModalVisible] = useState(false);
+  const [monthModal, setMonthModal] = useState(false);
+  const handleMonthModal = () => {
+    setMonthModal(!monthModal);
+  };
   const toggleModal = () => {
     setModalVisible(!isModalVisible);
   };
   return (
     <View>
-      <Calendar
-        markingType={'multi-dot'}
-        markedDates={{
-          '2021-07-16': {
-            dots: [vacation, massage, workout],
-
-            selectedColor: 'red',
-          },
-          '2021-07-17': {dots: [massage, workout]},
-          [today]: {selected: true, selectedColor: 'gray'},
+      <View
+        style={{
+          backgroundColor: 'white',
+          alignItems: 'flex-start',
+        }}>
+        <Button title="2021년 7월" onPress={handleMonthModal} />
+      </View>
+      <Modal
+        isVisible={monthModal}
+        style={{
+          justifyContent: 'flex-end',
+          margin: 0,
         }}
-        onDayPress={toggleModal}
-      />
+        transparent={true}
+        coverScreen={false}
+        backdropColor={'white'}
+        backdropOpacity={1}
+        deviceHeight="20%">
+        <View
+          style={{
+            flex: 0.3,
+            backgroundColor: 'white',
+            top: '70%',
+            justifyContent: 'space-around',
+            alignItems: 'center',
+            height: '50%',
+          }}>
+          <Button title="Hide modal" onPress={handleMonthModal} />
+        </View>
+      </Modal>
+      <View style={{height: 400}}>
+        <CalendarList
+          onVisibleMonthsChange={months => {
+            console.log('now these months are visible', months);
+          }}
+          calendarHeight={350}
+          // Max amount of months allowed to scroll to the past. Default = 50
+          pastScrollRange={50}
+          // Max amount of months allowed to scroll to the future. Default = 50
+          futureScrollRange={50}
+          // Enable or disable scrolling of calendar list
+          scrollEnabled={true}
+          // Enable or disable vertical scroll indicator. Default = false
+          showScrollIndicator={true}
+          markingType={'multi-dot'}
+          markedDates={{
+            '2021-07-16': {
+              dots: [vacation, massage, workout],
+
+              selectedColor: 'red',
+            },
+            '2021-07-17': {dots: [massage, workout]},
+            [today]: {selected: true, selectedColor: 'gray'},
+          }}
+          onDayPress={toggleModal}
+        />
+      </View>
       <Modal
         isVisible={isModalVisible}
         style={{
@@ -37,12 +85,12 @@ export default function Calender() {
         coverScreen={false}
         backdropColor={'white'}
         backdropOpacity={1}
-        deviceHeight="15%">
+        deviceHeight="10%">
         <View
           style={{
             flex: 0.3,
             backgroundColor: 'white',
-            top: '80%',
+            top: '60%',
             justifyContent: 'space-around',
             alignItems: 'center',
             height: '30%',
