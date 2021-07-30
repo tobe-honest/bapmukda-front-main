@@ -1,7 +1,8 @@
 import React, {useState} from 'react';
-import {View, Button, Text, StyleSheet} from 'react-native';
+import {View, Button, Text, Image, StyleSheet, ScrollView} from 'react-native';
 import {Calendar, CalendarList, Agenda} from 'react-native-calendars';
 import moment from 'moment';
+import egg from '../imoji/egg.png';
 import Modal from 'react-native-modal';
 export default function Calender() {
   const vacation = {key: 'vacation', color: 'red', selectedDotColor: 'blue'};
@@ -13,8 +14,11 @@ export default function Calender() {
   const handleMonthModal = () => {
     setMonthModal(!monthModal);
   };
-  const toggleModal = () => {
+  const [isDay, setisDay] = useState([]);
+
+  const toggleModal = event => {
     setModalVisible(!isModalVisible);
+    setisDay(event);
   };
   return (
     <View>
@@ -25,6 +29,7 @@ export default function Calender() {
         }}>
         <Button title="2021년 7월" onPress={handleMonthModal} />
       </View>
+
       <Modal
         isVisible={monthModal}
         style={{
@@ -51,7 +56,7 @@ export default function Calender() {
       <View style={{height: 400}}>
         <CalendarList
           onVisibleMonthsChange={months => {
-            console.log('now these months are visible', months);
+            console.log('now these months are visibl', months);
           }}
           calendarHeight={350}
           // Max amount of months allowed to scroll to the past. Default = 50
@@ -72,7 +77,7 @@ export default function Calender() {
             '2021-07-17': {dots: [massage, workout]},
             [today]: {selected: true, selectedColor: 'gray'},
           }}
-          onDayPress={toggleModal}
+          onDayPress={day => toggleModal(day)}
         />
       </View>
       <Modal
@@ -95,16 +100,43 @@ export default function Calender() {
             alignItems: 'center',
             height: '30%',
           }}>
-          <Text>Hello!</Text>
+          <View
+            style={{
+              flexDirection: 'row',
+              backgroundColor: '#ffffff',
+              shadowOpacity: 1,
+              shadowOffset: {width: 0, height: 1},
+              width: '80%',
+              height: '40%',
+              shadowColor: 'rgb(196, 196, 196)',
+              alignItems: 'center',
+              borderRadius: 10,
+            }}>
+            <View
+              style={{
+                backgroundColor: '#FBFBFB',
+                shadowOpacity: 1,
+                shadowOffset: {width: 2, height: 2},
+                width: '15%',
+                height: '70%',
+                margin: 20,
+                shadowColor: 'rgb(196, 196, 196)',
+                borderRadius: 10,
+                alignItems: 'center',
+                justifyContent: 'center',
+              }}>
+              <Text style={{textAlign: 'center', fontSize: 20}}>🍳</Text>
+            </View>
+            <Text style={{textAlign: 'center'}}>계란후라이</Text>
+            <Text style={{textAlign: 'center'}}>계란후라이</Text>
+            <Text style={{textAlign: 'center'}}>계란후라이</Text>
+          </View>
 
           <Button title="Hide modal" onPress={toggleModal} />
         </View>
       </Modal>
-      <Agenda
-        items={{
-          '2021-07-18': [{name: 'item 1 - any js object'}],
-        }}
-      />
+
+      <Agenda />
     </View>
   );
 }
