@@ -19,9 +19,18 @@ export default function Calender() {
   const today = moment().format('YYYY-MM-DD');
   const [isModalVisible, setModalVisible] = useState(false);
   const [monthModal, setMonthModal] = useState(false);
-
+  const [isDate, setIsDate] = useState('');
   const [isDay, setisDay] = useState('');
   const [isMonth, setIsMonth] = useState('');
+  var week = new Array(
+    '일요일',
+    '월요일',
+    '화요일',
+    '수요일',
+    '목요일',
+    '금요일',
+    '토요일',
+  );
   const handleMonthModal = () => {
     setMonthModal(!isModalVisible);
   };
@@ -32,7 +41,11 @@ export default function Calender() {
     setModalVisible(!isModalVisible);
     setisDay(day);
     setIsMonth(month);
+    var date = new Date(dateString).getDay();
+    var todate = week[date];
+    setIsDate(todate);
   };
+
   return (
     <View>
       <View
@@ -40,7 +53,7 @@ export default function Calender() {
           backgroundColor: 'white',
           alignItems: 'flex-start',
         }}>
-        <Button title="2021년 7월" onPress={handleMonthModal} />
+        <Button title="2021년 7월" onPress={() => setMonthModal(true)} />
       </View>
 
       <Modal
@@ -62,7 +75,7 @@ export default function Calender() {
             alignItems: 'center',
             height: '50%',
           }}>
-          <Button title="Hide modal" onPress={handleMonthModal} />
+          <Button title="Hide modal" onPress={() => setMonthModal(true)} />
         </View>
       </Modal>
       <View style={{height: 400}}>
@@ -132,7 +145,7 @@ export default function Calender() {
           }}>
           <Text style={{left: '-30%', fontSize: 20}}>
             {' '}
-            {isMonth}월 {isDay}일
+            {isMonth}월 {isDay}일 {isDate}
           </Text>
           <View
             style={{
