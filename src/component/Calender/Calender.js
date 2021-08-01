@@ -11,14 +11,16 @@ export default function Calender() {
   const today = moment().format('YYYY-MM-DD');
   const [isModalVisible, setModalVisible] = useState(false);
   const [monthModal, setMonthModal] = useState(false);
-  const handleMonthModal = () => {
-    setMonthModal(!monthModal);
-  };
-  const [isDay, setisDay] = useState([]);
 
-  const toggleModal = event => {
+  const [isDay, setisDay] = useState('');
+  const [isMonth, setIsMonth] = useState('');
+  const handleMonthModal = () => {
+    setMonthModal(!isModalVisible);
+  };
+  const toggleModal = (day, month) => {
     setModalVisible(!isModalVisible);
-    setisDay(event);
+    setisDay(day);
+    setIsMonth(month);
   };
   return (
     <View>
@@ -39,8 +41,7 @@ export default function Calender() {
         transparent={true}
         coverScreen={false}
         backdropColor={'white'}
-        backdropOpacity={1}
-        deviceHeight="20%">
+        backdropOpacity={1}>
         <View
           style={{
             flex: 0.3,
@@ -60,24 +61,34 @@ export default function Calender() {
           }}
           calendarHeight={350}
           // Max amount of months allowed to scroll to the past. Default = 50
-          pastScrollRange={50}
-          // Max amount of months allowed to scroll to the future. Default = 50
-          futureScrollRange={50}
-          // Enable or disable scrolling of calendar list
+
           scrollEnabled={true}
           // Enable or disable vertical scroll indicator. Default = false
           showScrollIndicator={true}
           markingType={'multi-dot'}
+          maxDate={new Date()}
+          markingType={'custom'}
           markedDates={{
             '2021-07-16': {
               dots: [vacation, massage, workout],
-
-              selectedColor: 'red',
+              startingDay: true,
+              color: 'green',
+              endingDay: true,
             },
             '2021-07-17': {dots: [massage, workout]},
-            [today]: {selected: true, selectedColor: 'gray'},
+            [today]: {
+              customStyles: {
+                container: {
+                  backgroundColor: '#333842',
+                  borderRadius: 10,
+                },
+                text: {
+                  color: 'white',
+                },
+              },
+            },
           }}
-          onDayPress={day => toggleModal(day)}
+          onDayPress={({day, month}) => toggleModal(day, month)}
         />
       </View>
       <Modal
@@ -89,17 +100,20 @@ export default function Calender() {
         transparent={true}
         coverScreen={false}
         backdropColor={'white'}
-        backdropOpacity={1}
-        deviceHeight="10%">
+        backdropOpacity={1}>
         <View
           style={{
-            flex: 0.3,
+            flex: 0.5,
             backgroundColor: 'white',
-            top: '60%',
+            top: '50%',
             justifyContent: 'space-around',
             alignItems: 'center',
-            height: '30%',
+            height: '50%',
           }}>
+          <Text>
+            {' '}
+            {isMonth}월 {isDay}일{' '}
+          </Text>
           <View
             style={{
               flexDirection: 'row',
@@ -127,8 +141,6 @@ export default function Calender() {
               }}>
               <Text style={{textAlign: 'center', fontSize: 20}}>🍳</Text>
             </View>
-            <Text style={{textAlign: 'center'}}>계란후라이</Text>
-            <Text style={{textAlign: 'center'}}>계란후라이</Text>
             <Text style={{textAlign: 'center'}}>계란후라이</Text>
           </View>
 
