@@ -1,5 +1,13 @@
 import React, {useState} from 'react';
-import {View, Button, Text, Image, StyleSheet, ScrollView} from 'react-native';
+import {
+  View,
+  Button,
+  Text,
+  Image,
+  StyleSheet,
+  ScrollView,
+  TouchableWithoutFeedback,
+} from 'react-native';
 import {Calendar, CalendarList, Agenda} from 'react-native-calendars';
 import moment from 'moment';
 import egg from '../imoji/egg.png';
@@ -17,7 +25,10 @@ export default function Calender() {
   const handleMonthModal = () => {
     setMonthModal(!isModalVisible);
   };
-  const toggleModal = (day, month) => {
+  const toggleModal = () => {
+    setModalVisible(!isModalVisible);
+  };
+  const sendDate = (day, month, dateString) => {
     setModalVisible(!isModalVisible);
     setisDay(day);
     setIsMonth(month);
@@ -88,9 +99,12 @@ export default function Calender() {
               },
             },
           }}
-          onDayPress={({day, month}) => toggleModal(day, month)}
+          onDayPress={({day, month, dateString}) =>
+            sendDate(day, month, dateString)
+          }
         />
       </View>
+
       <Modal
         isVisible={isModalVisible}
         style={{
@@ -99,8 +113,10 @@ export default function Calender() {
         }}
         transparent={true}
         coverScreen={false}
-        backdropColor={'white'}
-        backdropOpacity={1}>
+        backdropColor="rgba(r,g,b,a"
+        backdropOpacity={1}
+        onBackdropPress={toggleModal}
+        borderRadius={10}>
         <View
           style={{
             flex: 0.5,
@@ -109,10 +125,14 @@ export default function Calender() {
             justifyContent: 'space-around',
             alignItems: 'center',
             height: '50%',
+            borderRadius: 10,
+            shadowColor: 'rgb(196, 196, 196)',
+            shadowOffset: {width: 0, height: 1},
+            shadowOpacity: 1,
           }}>
-          <Text>
+          <Text style={{left: '-30%', fontSize: 20}}>
             {' '}
-            {isMonth}월 {isDay}일{' '}
+            {isMonth}월 {isDay}일
           </Text>
           <View
             style={{
