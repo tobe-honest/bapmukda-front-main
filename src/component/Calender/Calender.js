@@ -7,6 +7,7 @@ import {
   StyleSheet,
   ScrollView,
   TouchableWithoutFeedback,
+  TouchableOpacity,
 } from 'react-native';
 import {Calendar, CalendarList, Agenda} from 'react-native-calendars';
 import moment from 'moment';
@@ -47,7 +48,7 @@ export default function Calender() {
   };
 
   return (
-    <View>
+    <View style={{}}>
       <View
         style={{
           backgroundColor: 'white',
@@ -55,7 +56,6 @@ export default function Calender() {
         }}>
         <Button title="2021년 7월" onPress={() => setMonthModal(true)} />
       </View>
-
       <Modal
         isVisible={monthModal}
         style={{
@@ -117,7 +117,11 @@ export default function Calender() {
           }
         />
       </View>
-
+      <View style={{alignItems: 'center', top: 90}}>
+        <TouchableOpacity activeOpacity={0.8} style={styles.button}>
+          <Text style={styles.text}>오늘</Text>
+        </TouchableOpacity>
+      </View>
       <Modal
         isVisible={isModalVisible}
         style={{
@@ -126,7 +130,7 @@ export default function Calender() {
         }}
         transparent={true}
         coverScreen={false}
-        backdropColor="rgba(r,g,b,a"
+        backdropColor="rgba(r,g,b,a)"
         backdropOpacity={1}
         onBackdropPress={toggleModal}
         borderRadius={10}>
@@ -180,7 +184,6 @@ export default function Calender() {
           <Button title="Hide modal" onPress={toggleModal} />
         </View>
       </Modal>
-
       <Agenda />
     </View>
   );
@@ -191,5 +194,16 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     margin: 10,
+  },
+  button: {
+    width: 70,
+    height: 40,
+    backgroundColor: 'white',
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderRadius: 15,
+  },
+  text: {
+    color: '#999BA0',
   },
 });
