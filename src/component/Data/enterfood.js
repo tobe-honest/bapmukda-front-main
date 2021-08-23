@@ -147,7 +147,7 @@ export default function MtoE(props) {
             <View style={styles.Foodicon}>
               <Image source = {require('../imgs/🍚.png')}/>
             </View>
-            <View style={{width:"70%",height:"46.15%"}}>
+            <View style={{width:"70%",height:"46.15%",backgroundColor:"black",justifyContent:"center"}}>
               <Input_food></Input_food>
               {/* <Text style={styles.enterfood}>
               음식명을 입력해주세요

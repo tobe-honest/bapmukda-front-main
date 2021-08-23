@@ -5,6 +5,10 @@ import moment, { locale } from 'moment';
 import 'moment/locale/ko';
 import Picker from '@gregfrench/react-native-wheel-picker'
 
+import axios from 'axios'
+import { response } from 'express';
+import { anything } from 'expect';
+
 var PickerItem = Picker.Item;
 
 
@@ -24,13 +28,25 @@ const styles = StyleSheet.create({
     // top: "5.44%",
     justifyContent:"center",
   },
+  addition:{
+    position:"absolute",
+    width:"6.4%",
+    height:"54.5%",
+    backgroundColor:"#E17551",
+    borderRadius:8,
+    justifyContent:"center",
+    alignItems:"center",
+    left:"4%",
+    textAlign:"center"
+  },
   diary_Check_box:{
     // backgroundColor:"yellow",
     position: "absolute",
-    width: 20, //"5.33%",
-    height: 20, //"45.45%",
+    width: "5.33%",
+    height: "45.45%",
     // left: 355, //"88.27%",
-    marginLeft:"84%",
+    // marginLeft:"84%",
+    right:"4%",
     top: "27.28%",
     justifyContent:"center",
     alignItems:"center"
@@ -233,14 +249,103 @@ enterfood:{
   textAlign:"center",
   letterSpacing:0.02,
   color: "#999BA0"
+},
+registerModalTop:{
+  width:"100%",
+  height:"22%",
+  position:"absolute",
+  top:0,
+  justifyContent:"center",
+  alignContent:"center",
+  // backgroundColor:"green"
+},
+registerText:{
+  width: "23.47%",
+  height: "36.37%",
+  // alignSelf:"center",
+  // position:"absolute",
+  left: "3%",
+  justifyContent: "center",
+  alignContent: "center",
+  textAlign: "center",
+  fontFamily: "SpoqaHanSans",
+  fontStyle: "normal",
+  fontWeight: "bold",
+  fontSize: 16,
+  lineHeight: 24,
+  // backgroundColor:"green"
+},
+registerModalClose:{
+  width:"4.8%",
+  height:"36.37%",
+  alignSelf:"center",
+  position:"absolute",
+  right:"3%",
+  // backgroundColor:"green"
+},
+aligntop:{
+  width:"100%",
+  height:"100%",
+  alignItems:"center",
+  justifyContent:"center"
+},
+registerModalMiddleText:{
+  width:"23.47%",
+  height:"7%",
+  justifyContent:"center",
+  alignContent:"center",
+  position:"absolute",
+  left:"3%",
+  top:"27.33%",
+  flexDirection:"row",
+  backgroundColor:"red",
+},
+registerModalFood:{
+  width:"87.2%",
+  height:"24%",
+  shadowColor: 'rgba(196, 196, 196, 0.2)',
+  shadowOffset: {width: 0, height: 2, top: 1, bottom: 6},
+  shadowRadius: 6,
+  borderRadius:12,
+  backgroundColor:"yellow",
+  justifyContent:"center",
+  flexDirection:"row",
+  position:"absolute",
+},
+registerModalFoodIcon:{
+  borderWidth:1,
+  borderRadius: 18,
+  borderColor:"#FBFBFB",
+  borderStyle:"solid",
+  width:"14.67%",
+  height:"66.68%",
+  backgroundColor:"#EBEBEC",
+  justifyContent:'center',
+  alignItems:'center',
+  alignSelf:"center",
+  position:"absolute",
+  left:"4.9%",
+},
+registerModalTrashIcon:{
+  width:"8.56%",
+  height:"38.9%",
+  justifyContent:'center',
+  alignItems:'center',
+  alignSelf:"center",
+  position:"absolute",
+  right:"8.38%" //76.57
 }
 });
 
 
 
 export default function MtoE(props) {
-  
+  const [addMode, setAddMode] = useState(false);
+  const [additionalCnt, setAdditionalCnt] = useState(0);
+  const [colorChoice, setColorChoice] = useState("#E17551");
+  const [colorChoiceText, setColorChoiceText] = useState("white");
 
+  const [disable, setDisable] = useState(false);
   const [parentHeight, setParentHeight] = useState(0);
   const onLayout = event => {
     const {height} = event.nativeEvent.layout;
@@ -254,7 +359,7 @@ export default function MtoE(props) {
   const [aList, setAList] = useState(['오전', '오후']);
 
   const [selectedYear, setSelectedYear ] = useState(0);
-  const [yearList, setYearList] = useState(['2020년', '2021년']);
+  const [yearList, setYearList] = useState(['2019년','2020년', '2021년','2022년']);
   const [selectedMonth, setSelectedMonth ] = useState(0);
   const [monthList, setMonthList] = useState(['1월', '2월', '3월', '4월', '5월', '6월', '7월', '8월', '9월', '10월', '11월', '12월']);
   const [selectedDate, setSelectedDate ] = useState(1);
@@ -282,6 +387,8 @@ export default function MtoE(props) {
   const [Colr2, setColor2] = useState("#FFFFFF");
   const [Colr3, setColor3] = useState("#FFFFFF");
 
+  const [showRegister, setShowRegister] = useState(false);
+
   const [date, setDate] = useState(moment().locale('ko').utcOffset(+9));
 
   const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
@@ -299,12 +406,7 @@ export default function MtoE(props) {
       setIsLeaf(false);
     }
   }
-  const thirtyone = () =>{
-    if((Number( (monthList[selectedMonth]).slice(0, -1) ) % 2 == 1 && Number( (yearList[selectedYear]).slice(0, -1) ) < 8) || (Number( (yearList[selectedYear]).slice(0, -1) ) % 2 == 0 && Number( (yearList[selectedYear]).slice(0, -1) ) > 7))
-    {
-      setIs31(true);
-    } 
-  }
+
   const confirm = () => {
     setShow(false);
     if((selectedItem+1).toString.length == 1 && Number(selectedItem+1) < 10){
@@ -326,19 +428,30 @@ export default function MtoE(props) {
       setMinute(':'+selectedMinute);
     }  
   };
-  const changeDate = (index) => {
-    console.log("index"+index);
-    console.log("Before"+monthList[selectedMonth]);
-    setSelectedMonth(index);
-    console.log("After"+monthList[index]);
-    leaf();
-    // console.log(isleaf);
-
-    if( Number(monthList[index].slice(0,-1)) > Number(moment().locale('ko').utcOffset(+9).format('MM')) )
+  const changeYear = (index) => {
+    setSelectedYear(index);
+    if ( Number(yearList[index].slice(0,-1)) > Number(moment().locale('ko').utcOffset(+9).format('YYYY')) || ( Number(yearList[index].slice(0,-1)) == Number(moment().locale('ko').utcOffset(+9).format('YYYY')) && Number(monthList[selectedMonth].slice(0,-1)) > Number(moment().locale('ko').utcOffset(+9).format('MM')) ) || ( Number(yearList[index].slice(0,-1)) == Number(moment().locale('ko').utcOffset(+9).format('YYYY')) && Number(monthList[selectedMonth].slice(0,-1)) == Number(moment().locale('ko').utcOffset(+9).format('MM') ) && Number(dateList31[selectedDate].slice(0,-1)) > Number(moment().locale('ko').utcOffset(+9).format('DD') )))
     {
-      setSelectedMonth(selectedMonth);
-      console.log(selectedMonth);
+      setColorChoice("#EBEBEC");
+      setColorChoiceText("#D6D7D9");
+      setDisable(true);
     }
+    else
+    {
+      setColorChoice("#E17551");
+      setColorChoiceText("white");
+      setDisable(false);
+    }
+  };
+  const changeMonth = (index) => {
+    // console.log("index"+index);
+    // console.log("selectedMonth"+selectedMonth);
+    // console.log("Before"+monthList[selectedMonth]);
+    setSelectedMonth(index);
+    // console.log("index"+selectedMonth);
+    // console.log("After"+monthList[selectedMonth]);
+    leaf();
+    
     if (isleaf)//(Number(yearList[selectedYear]) % 4 == 0 && Number(yearList[selectedYear]) % 100 != 0 && Number(yearList[selectedYear]) % 400 == 0) // 윤년
     {
       if ( (Number(monthList[index].slice(0,-1) ) % 2 == 1 && Number(monthList[index].slice(0,-1) ) < 8) || (Number(monthList[index].slice(0,-1) ) % 2 == 0 && Number(monthList[index].slice(0,-1) ) > 7) ) // 31일 까지 있는 달
@@ -374,7 +487,35 @@ export default function MtoE(props) {
         // console.log("30일 까지 있는 달입니다."+dateList31+monthList[index].slice(0,-1) )
       }
     }
-  }
+
+    if ( Number(yearList[selectedYear].slice(0,-1)) > Number(moment().locale('ko').utcOffset(+9).format('YYYY')) || ( Number(yearList[selectedYear].slice(0,-1)) == Number(moment().locale('ko').utcOffset(+9).format('YYYY')) && Number(monthList[index].slice(0,-1)) > Number(moment().locale('ko').utcOffset(+9).format('MM')) ) || ( Number(yearList[selectedYear].slice(0,-1)) == Number(moment().locale('ko').utcOffset(+9).format('YYYY')) && Number(monthList[index].slice(0,-1)) == Number(moment().locale('ko').utcOffset(+9).format('MM') ) && Number(dateList31[selectedDate].slice(0,-1)) > Number(moment().locale('ko').utcOffset(+9).format('DD') )))
+    {
+      setColorChoice("#EBEBEC");
+      setColorChoiceText("#D6D7D9");
+      setDisable(true);
+    }
+    else
+    {
+      setColorChoice("#E17551");
+      setColorChoiceText("white");
+      setDisable(false);
+    }
+  };
+  const changeDate = (index) => {
+    setSelectedDate(index);
+    if ( Number(yearList[selectedYear].slice(0,-1)) > Number(moment().locale('ko').utcOffset(+9).format('YYYY')) || ( Number(yearList[selectedYear].slice(0,-1)) == Number(moment().locale('ko').utcOffset(+9).format('YYYY')) && Number(monthList[selectedMonth].slice(0,-1)) > Number(moment().locale('ko').utcOffset(+9).format('MM')) ) || ( Number(yearList[selectedYear].slice(0,-1)) == Number(moment().locale('ko').utcOffset(+9).format('YYYY')) && Number(monthList[selectedMonth].slice(0,-1)) == Number(moment().locale('ko').utcOffset(+9).format('MM') ) && Number(dateList31[index].slice(0,-1)) > Number(moment().locale('ko').utcOffset(+9).format('DD') )))
+    {
+      setColorChoice("#EBEBEC");
+      setColorChoiceText("#D6D7D9");
+      setDisable(true);
+    }
+    else
+    {
+      setColorChoice("#E17551");
+      setColorChoiceText("white");
+      setDisable(false);
+    }
+  };
   const comeBack = (index) => {
     // selectedDate //이게 이전값
     console.log("Before"+selectedDate);
@@ -396,37 +537,6 @@ export default function MtoE(props) {
     setYear(yearList[selectedYear]);
     setMonth(monthList[selectedMonth]);
     setDate_(dateList31[selectedDate]);
-    // console.log(year, month, date_)
-    // if (Number(yearList[selectedYear]) % 4 == 0 && Number(yearList[selectedYear]) % 100 != 0 && Number(yearList[selectedYear]) % 400 == 0) // 윤년
-    // {
-    //   if ( (Number(monthList[selectedMonth]) % 2 == 1 && Number(yearList[selectedYear]) < 8) || (Number(yearList[selectedYear]) % 2 == 0 && Number(yearList[selectedYear]) > 7) ) // 31일 까지 있는 달
-    //   {
-    //     setDate(dateList31[selectedDate]);
-    //   }
-    //   else if (Number(yearList[selectedYear]) == 2)
-    //   {
-    //     setDate(dateList29[selectedDate]);
-    //   }
-    //   else
-    //   {
-    //     setDate(dateList30[selectedDate]);
-    //   }
-    // }
-    // else
-    // {
-    //   if ( (Number(monthList[selectedMonth]) % 2 == 1 && Number(yearList[selectedYear]) < 8) || (Number(yearList[selectedYear]) % 2 == 0 && Number(yearList[selectedYear]) > 7) ) // 31일 까지 있는 달
-    //   {
-    //     setDate(dateList31[selectedDate]);
-    //   }
-    //   else if (Number(yearList[selectedYear]) == 2)
-    //   {
-    //     setDate(dateList28[selectedDate]);
-    //   }
-    //   else
-    //   {
-    //     setDate(dateList30[selectedDate]);
-    //   }
-    // }
   };
 
   const [show, setShow] = useState(false);
@@ -469,17 +579,50 @@ export default function MtoE(props) {
     else{
       setColor2("#FFFFFF");
     }
+  };
+  
+  const overDate = () =>{
+    if (Number(year) > Number(moment().locale('ko').utcOffset(+9).format('YYYY'))){
+      console.log('띠리띠띠');
+      setDisable(true);
+      return "#E17551"
+    }
+    else{
+      setDisable(false);
+      return "#EBEBEC"
+    }
+  };
+
+  const addtionalRegister = () =>{
+    setShowRegister(false);
+    setAdditionalCnt(additionalCnt + 1);
+    setAddMode(true);
   }
-  
-  
+
+  const getDailyMealHistory = () =>{
+    try{
+      axios.get('http://ec2-54-180-32-86.ap-northeast-2.compute.amazonaws.com:8080/swagger-ui.html#/meal-controller/getDailyMealHistoryUsingGET')
+       .then(response => {
+             console.log(response.data);
+              })
+       .catch(err => console.log(err));
+    } catch(error){
+        console.log('Fetch Error:', error);
+    }
+ };
+
 
   return (
     <View style={styles.mainView}>
       
       <View style={styles.top}>
+          {additionalCnt != 0 && addMode == true ? <View style={styles.addition}>
+            <Text>{additionalCnt}</Text>
+          </View> : <View></View>}
+
           <Text style={styles.toptext}>식단등록</Text>
         
-          <View style={styles.diary_Check_box}>
+          <View style={[styles.diary_Check_box,{backgroundColor:"#E17551"}]}>
             <TouchableOpacity
             onPress={() => {
               props.navigation.navigate('Sidebar_logined');
@@ -554,7 +697,7 @@ export default function MtoE(props) {
                       
                       itemStyle={{color:"#D6D7D9", fontFamily: "SpoqaHanSans", fontWeight: "bold", fontSize: 20, lineHeight: 24,}}
                       // selectedItemTextColor="black"
-                      onValueChange={(index) => setSelectedYear(index)}>
+                      onValueChange={(index) => changeYear(index)}>
                       {yearList.map((value, i) => (
                         <PickerItem label={value} value={i} key={i}/>
                       ))}
@@ -571,7 +714,7 @@ export default function MtoE(props) {
                     itemStyle={{color:"#D6D7D9", fontFamily: "SpoqaHanSans", fontWeight: "bold", fontSize: 20, lineHeight: 24,}}
                     // selectedItemTextColor="black"
                     // onValueChange={(index) => setSelectedMonth(index)}>
-                    onValueChange={(index) => changeDate(index)}>
+                    onValueChange={(index) => changeMonth(index)}>
                     {monthList.map((value, i) => (
                       <PickerItem label={value} value={i} key={i}/>
                     ))}
@@ -590,8 +733,8 @@ export default function MtoE(props) {
                     itemStyle={{color:"#D6D7D9", fontFamily: "SpoqaHanSans", fontWeight: "bold", fontSize: 20, lineHeight: 24,}}
                     // selectedItemTextColor="black"
                     // onValueChange={(index) => setSelectedDate(index)}>
-                    onValueChange={(index) => comeBack(index)}>
-                    
+                    onValueChange={(index) => changeDate(index)}>
+
                     {
                       dateList31.map((value, i) => (
                         <PickerItem label={value} value={i} key={i}/>
@@ -625,9 +768,10 @@ export default function MtoE(props) {
                     </TouchableOpacity>
 
                     <TouchableOpacity style={{width:"48.17%", height:"100%"}}
-                    onPressOut={() => confirmDate()}>
-                      <View style={{backgroundColor:"#E17551",position:"absolute",left:"7.5%",justifyContent:"center",flex:1,width:"100%", height:"100%",borderWidth: 2,borderColor:"#E17551",borderStyle:"solid", borderRadius: 10}}>
-                        <Text style={{color:"white",alignSelf:"center",fontFamily: "SpoqaHanSans",fontStyle: "normal",fontWeight: "bold",fontSize: 17,lineHeight: 21}}>완료</Text>
+                    onPressOut={() => confirmDate()}
+                    disabled = {disable}>
+                      <View style={{backgroundColor: colorChoice, position:"absolute",left:"7.5%",justifyContent:"center",flex:1,width:"100%", height:"100%",borderColor:"#E17551",borderStyle:"solid", borderRadius: 10}}>
+                        <Text style={{color:colorChoiceText, alignSelf:"center",fontFamily: "SpoqaHanSans",fontStyle: "normal",fontWeight: "bold",fontSize: 17,lineHeight: 21}}>완료</Text>
                       </View>
                     </TouchableOpacity>
 
@@ -711,7 +855,7 @@ export default function MtoE(props) {
 
                     <TouchableOpacity style={{width:"48.17%", height:"100%"}}
                     onPressOut={() => confirm()}>
-                      <View style={{backgroundColor:"#E17551",position:"absolute",left:"7.5%",justifyContent:"center",flex:1,width:"100%", height:"100%",borderWidth: 2,borderColor:"#E17551",borderStyle:"solid", borderRadius: 10}}>
+                      <View style={{backgroundColor: "#E17551",position:"absolute",left:"7.5%",justifyContent:"center",flex:1,width:"100%", height:"100%",borderWidth: 2,borderColor:"#E17551",borderStyle:"solid", borderRadius: 10}}>
                         <Text style={{color:"white",alignSelf:"center",fontFamily: "SpoqaHanSans",fontStyle: "normal",fontWeight: "bold",fontSize: 17,lineHeight: 21}}>완료</Text>
                       </View>
                     </TouchableOpacity>
@@ -741,12 +885,73 @@ export default function MtoE(props) {
 
       </TouchableHighlight>
 
-      <TouchableOpacity style={{width:"100%",height:"8.65%",position:"absolute",bottom:0}}>
+      <TouchableOpacity 
+      style={{width:"100%",height:"8.65%",position:"absolute",bottom:0}}
+      onPress={() => setShowRegister(true)}>
         <View style={{backgroundColor:"#E17551", width:"100%",height:"100%",alignItems:"center",justifyContent:"center"}}>
           <View style={{width:"14.13%", height:"30%",alignItems:"center"}}>
             <Text style={styles.bottomtext}>등록하기</Text>
           </View>
         </View>
+        <Modal
+              transparent={true}
+              animationType='slide'
+              visible={showRegister}
+              supportedOrientations={['portrait']}
+              onRequestClose={() => setShowRegister(false)}>
+              
+              <View style={[styles.wrapperVertical,{backgroundColor:"green"}]}>
+                
+                <View style={styles.registerModalTop}>
+                  <Text style={styles.registerText}>추가 목록(1)</Text>
+                  <TouchableOpacity
+                onPress={() => setShowRegister(false)}
+                style ={styles.registerModalClose}>
+                    <View style={styles.aligntop}>
+                        <Image source = {require('../imgs/close.png')}/>
+                    </View>
+                  </TouchableOpacity>
+                </View>
+                
+                <View style={styles.registerModalMiddleText}>
+                  <Image source = {require('../imgs/Rectangle_135.png')} style = {[{width:"9.1%",height:"38.1%",justifyContent:"center",alignContent:"center",alignSelf:"center"}]}/>
+                  <Text style = {[{justifyContent:"center",alignContent:"center",alignSelf:"center"}]}> 아침 </Text>
+                  <Text style = {[{justifyContent:"center",alignContent:"center",alignSelf:"center"}]}> 11:01 </Text>
+                </View>
+
+                <View style={[styles.registerModalFood]}>
+                  <View style={styles.registerModalFoodIcon}>
+                    <Image source = {require('../imgs/🍚.png')}/>
+                  </View>
+                  
+                  <Text style={{justifyContent:'center', alignItems:'center', alignSelf:"center", position:"absolute",left:"24.46%"}}> 생선구이 </Text>
+                  
+                  <View style={[styles.registerModalTrashIcon]}>
+                    <Image source = {require('../imgs/trash_can.png')}/>
+                  </View>
+                </View>
+                
+                <View style={{width:"88.17%", height:"18.67%", bottom:"14%",position:"absolute",flexDirection:"row"}}>
+                    
+                    <TouchableOpacity style={{width:"48.17%", height:"100%"}}
+                    onPressOut={() => addtionalRegister()}>
+                      <View style={{position:"absolute",left:0,justifyContent:"center",flex:1,width:"100%", height:"100%",borderWidth: 2,borderColor:"#E17551",borderStyle:"solid", borderRadius: 10}}>
+                        <Text style={{color:"#E17551",alignSelf:"center",fontFamily: "SpoqaHanSans",fontStyle: "normal",fontWeight: "bold",fontSize: 17,lineHeight: 21}}>추가등록</Text>
+                      </View>
+                    </TouchableOpacity>
+
+                    <TouchableOpacity style={{width:"48.17%", height:"100%"}}
+                    onPress={getDailyMealHistory}
+                    >
+                      <View style={{backgroundColor:"#E17551",position:"absolute",left:"7.5%",justifyContent:"center",flex:1,width:"100%", height:"100%",borderWidth: 2,borderColor:"#E17551",borderStyle:"solid", borderRadius: 10}}>
+                        <Text style={{color:"white",alignSelf:"center",fontFamily: "SpoqaHanSans",fontStyle: "normal",fontWeight: "bold",fontSize: 17,lineHeight: 21}}>등록완료</Text>
+                      </View>
+                    </TouchableOpacity>
+
+                </View>
+
+              </View>
+            </Modal>
       </TouchableOpacity>
   
     </View>

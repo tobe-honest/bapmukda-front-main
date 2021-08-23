@@ -85,7 +85,7 @@ const styles = StyleSheet.create({
   Wrap:{
     width:"100%",
     height:"100%",
-    // backgroundColor:"green",
+    backgroundColor:"green",
     // alignSelf:"center",
     // alignContent:"center",
     justifyContent:"center",
